@@ -16,6 +16,18 @@ const PORT = process.env.PORT || 3001;
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccountKey.json");
 
+// Place this CORS configuration BEFORE all your route definitions
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://nstpweb.vercel.app'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+  })
+);
+
+app.use(express.json({ limit: "50mb" }));
+app.use(cookieParser());
 // Connect to MongoDB
 
 mongoose
@@ -43,22 +55,16 @@ mongoose
 //   })
 //   .catch((err) => console.log("Error: ", err));
 
-//app.use(express.json({ limit: "50mb" }));
+
+
 // app.use(
 //   cors({
-//     origin: 'http://nstpportalfrontend.s3-website.eu-north-1.amazonaws.com',
+//     origin: 'https://localhost:3000', // Your frontend URL
 //     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 //   })
 // );
-
-app.use(
-  cors({
-    origin: 'https://nstpweb-ons8f213o-haider-alis-projects-34fe858a.vercel.app', // Your frontend URL
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
-  })
-);
 
 try {
   admin.initializeApp({
